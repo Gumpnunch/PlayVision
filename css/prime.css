@@ -1,0 +1,16 @@
+#AsbestosDiv {
+  margin: 5px;
+  padding: 10px 10px;
+  overflow: hidden;
+  text-align: center;
+border: 1px solid rgba(180,180,180,0.7);
+-webkit-border-radius: 5px;
+border-radius: 5px;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  background-color: #dcedf2;
+}
+
+#loginErrorMsg {
+visibility: hidden;
+}

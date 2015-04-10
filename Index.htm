@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+    <title>Data Test</title>
+
+    <!-- Bootstrap -->
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="js/bootstrap-table-master/dist/bootstrap-table.min.css">
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/prime.css">	
+<script>
+function doLoad() {
+$('#MainContent').load('subHTML/Login.htm');
+}
+
+function doLogin() {
+var sUsername;
+var sPassword;
+
+sUsername = $('#username').val();
+sPassword = $('#password').val();
+
+if (sUsername == 'test' & sPassword == 'test') {
+	$('#top_buttons').css("visibility","visible");
+	$('#TopLogo').css("visibility","hidden");
+	$('#TopLogo').css("height","0");
+	$('#TopNav').css("visibility","visible");
+	$('#MainContent').html('');
+
+	return false;
+}
+else {
+   $('#loginErrorMsg').css("visibility","visible");
+   	return false;
+}
+}
+
+function doChange() {
+
+   $('#loginErrorMsg').css("visibility","hidden");
+}
+
+function doARA_Main() {
+	var ara_bad;
+	var ara_good;
+	var total;
+	var leftover;
+	var doMath;
+	var doMath2;
+	var doMath3;
+	
+	$('#MainContent').load('SubHTML/ARA-Main.htm');
+	
+	$.get("datascript/gettotalsitecount.asp", function(data, status){
+		total=data.replace("<br>","");
+		
+		$.get("datascript/getbadsitecount.asp", function(data, status){
+			ara_bad=data.replace("<br>","");
+			doMath=(ara_bad / total) * 100;
+			doMath = Math.ceil(doMath);
+			
+			$("#PosARA").css("width", doMath + "%");
+			$("#PosARA").html(doMath + "%<br>Asbestos Suspected");
+			$("#btnPosARA").html("View " + ara_bad + " Suspect Sites");
+			
+			$.get("datascript/getgoodsitecount.asp", function(data, status){
+				ara_good=data.replace("<br>","");
+				doMath2=(ara_good / total) * 100;
+				doMath2 = Math.ceil(doMath2);
+
+				$("#NegARA").css("width", doMath2 + "%");
+				$("#NegARA").html(doMath2 + "%<br>Not Suspected");
+				$("#btnNegARA").html("View " + ara_good + " Not Suspected");
+			
+				doMath3=100 - (doMath + doMath2);
+				leftover = total - (Number(ara_bad) + Number(ara_good));
+				
+				$("#NotSurveyed").css("width", doMath3 + "%");
+				$("#NotSurveyed").html(doMath3 + "%<br>Not Surveyed");	
+				$("#btnNotSurveyed").html("View " + leftover + " Unknowns");
+
+				$("#AlertHolder").css("visibility","visible");
+				
+				});			
+			});		
+		});
+		
+	};
+
+function doARA_PosList() {
+$("#AlertHolder2").css("Visibility", "visible");
+}
+
+function doFRA_Main() {
+$('#MainContent').load('subHTML/FRA-Main.htm');
+}
+
+</script>	
+  </head>
+  
+<body role="document" onload="doLoad();">
+ <div id = "TopLogo" class="container" style="background-color: rgba(49,117,175,1);"><p/><p/><p/><p/>
+  <img id="logo" src="img/VisionHead.png" class="img-rounded" alt="Vision" width="50" height="39" ><p/>
+ </div>
+  <div id = "TopNav" class="container" style="background-color: rgba(49,117,175,1);visibility: hidden;">
+ <div class="btn-group" id="top_buttons">
+  <button type="button" id="btnt1" class="btn btn-primary " onclick="doARA_Main();"><img src="img/ARA_head.png"></button>
+  <button type="button" id="btnt2" class="btn btn-primary disabled" onclick="doFRA_Main();"><img src="img/FRA_head.png"></button>
+  <button type="button" id="btnt3" class="btn btn-primary disabled" onclick="doFRA_Main();"><img src="img/CRA_head.png"></button>
+  <button type="button" id="btnt4" class="btn btn-primary disabled" onclick="doFRA_Main();"><img src="img/DDA_head.png"></button>
+  <button type="button" id="btnt5" class="btn btn-primary disabled" onclick="doFRA_Main();"><img src="img/WRA_head.png"></button>
+</div>
+</div>
+<p/>
+<div id="MainContent">
+</div>
+	 <div id="AlertHolder2"style="Visibility: hidden;">
+		<table data-toggle="table" data-url="DataScript/GetARAPosList.asp">
+			<thead>
+			<tr>
+				<th data-field="Site_Code">Site Code</th>
+				<th data-field="Positive">Positive</th>
+				<th data-field="Strongly_Presumed">Strongly Presumed</th>
+				<th data-field="Presumed">Presumed</th>
+			</tr>
+			</thead>
+		</table>
+	 </div>	
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="js/jquery-1.11.2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="js/bootstrap-table-master/dist/bootstrap-table.min.js"></script>
+	<script src="js/bootstrap-table-master/dist/locale/bootstrap-table-en-US.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>
+
